@@ -8,7 +8,7 @@ console.table(
 
 
  //start the loop, ask user question and provide employee tracker choices 
-    initProgram()
+function initProgram()
     {
         //run inquirer
         inquirer
