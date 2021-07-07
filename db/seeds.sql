@@ -21,20 +21,20 @@ VALUES
 ('Account Manager', 120000, 5),
 ('Sales Manager', 160000, 2),
 ('Human Reasources Manager', 80000, 4),
-('Software Engineer', 200000, 4),
+('Software Engineer', 200000, 4);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES 
-('Deja', 'Martin', 7, NULL),
+('Deja', 'Graver', 7, NULL),
 ('Lola', 'Davidov', 1, NULL),
 ('Davina', 'Palmer', 2, 1),
 ('Ralph', 'Giovinazzo', 2, 2),
 ('Shuran', 'Jhandu', 4, 3),
 ('Jennifer', 'Drieberg', 5, 2),
-('Michael', 'Silverman', 7, 1),
+('Kishandra', 'Hall', 7, 1),
 ('Neisha', 'Martin', 7, 3),
 ('Anita', 'Graver', 9, 2),
 ('Karen', 'East', 2, 7),
 ('Bianca', 'Nugara', 9, 1),
 ('Jaden', 'Smith', 5, 6),
-('Amani', 'Freeman', 3, 6),
+('Ann', 'Osman', 3, 6);
