@@ -12,27 +12,28 @@
   <br />
 
 <a name="Description">#Description</a>
-  Team Profile Generator is an application that allows you track employees and update deparments and employee role details. 
+  Employee Tracker is an application that allows you track employees and update deparments and employee role details. 
+
  <br />
 
-<a name="Usage">#Usage</a>
-1. Enter “node index” in the terminal
-2. Answer questions and prompts accordingly
-3. Once you have gone through all of the prompts and questions you will find the generated HTML file located in the dist folder. 
-
-
-    <br />
-
-
 <a name="Description">#Installation</a>
-1. Pull the application from the GitHub repository https://github.com/dejagraver/teamprofilegenerator
-2. Navigate the command line in the terminal the main folder the repository code is pulled into
-3. In the terminal run "npm i" for inquirer and jest
+1. Pull the application from the GitHub repository https://github.com/dejagraver/employeetracker
+2. Navigate the command line in the terminal the main folder the repository code is pulled into.
+3. In the terminal run "npm i" for inquirer, consoletable and mysql2
+4. In the terminal login to mysql account "mysql -u root -p" and enter “source db/db.sql” to initialize your database and “source db/schema.sql” to initialize your tables.
 
     <br />
+
+<a name="Usage">#Usage</a>
+1. From root folder of the application open the terminal 
+2. Enter “node index” in the terminal
+3. Answer questions and prompts accordingly
+
+    <br />
+
 
  <a name="Links">#Links</a>
-https://youtu.be/YShLQznxFeM
+https://youtu.be/P1lDaUoqh3k
 
   <br />
 

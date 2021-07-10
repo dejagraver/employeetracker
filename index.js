@@ -1,29 +1,23 @@
-const db = require('db');
 const inquirer = require('inquirer');
 const consoletable = require('console.table');
 const mysql = require('mysql2');
 
-require('dotenv').config();
 
 // Create connection to db.sql
 // Create a connection from the db.sql to the sql server
 const connection = mysql.createConnection(
     {
       host: 'localhost',
-      user: process.env.USER,
-      password: process.env.DB_PASSWORD,
+      user: 'root',
+      password: 'nevayah8',
       database: 'employee'
-    },
-  );
+    });
 
-connection.connect(function (err) {
+connection.connect(function (err){
     if (err) throw err;
     initProgram();
 })
 
-// function initConnection(){
-// }
-// initConnection();
 
 console.table(
     "\n------------ EMPLOYEE TRACKER ------------\n"
@@ -33,8 +27,8 @@ console.table(
 function initProgram()
     {
         //run inquirer
-        inquirer
-        .prompt({
+        inquirer.prompt([
+            {
             type: 'list',
             name: 'selection',
             message: 'What would you like to do?',
@@ -45,11 +39,10 @@ function initProgram()
                 'Add a department', 
                 'Add a role', 
                 'Add an employee', 
-                'Update an employee role', 
                 'Quit']
-        })
-        .then( answer => {
-            switch(answer.list) {
+        }])
+        .then(function(answer){
+            switch(answer.selection){
                 case 'View all departments':
                 viewDepartment();
                 break;
@@ -74,10 +67,6 @@ function initProgram()
                 addEmployee();
                 break;
 
-                case 'Update an employee role':
-                updateEmployee();
-                break;
-
                 case 'Quit':
                 quitProgram();
                 break;
@@ -89,17 +78,17 @@ function initProgram()
 
 //create functions for each switch case scenario, (VIEW, ADD, UPDATE)
 //using SELECT / SELECT * FROM to retrieve specific information and display it (for "view..." choices)
-function viewEmployees() {
+function viewEmployees(){
     var query = 'SELECT * FROM employee';
-    connection.query(query, function(err, res) {
+    connection.query(query, function(err, res){
         if (err) throw err;
         console.table(res); 
         initProgram();
     })
 };
 
-function addEmployee() {
-    connection.query('SELECT * FROM role', function (err, res) {
+function addEmployee(){
+    connection.query('SELECT * FROM roles', function (err, res){
         if (err) throw err;
         inquirer.prompt([
                 {
@@ -115,16 +104,16 @@ function addEmployee() {
                 {
                     name: 'manager_id',
                     type: 'input', 
-                    message: "Enter the employees managers name"
+                    message: "Enter the employees managers id number"
                 },
                 {
-                    name: 'role', 
+                    name: 'roles', 
                     type: 'list',
-                    message: "Imput employees Role", 
+                    message: "Input employees Role", 
                     choices: chooseRole()
                 }
-                ]).then(function (answer) {
-                   var roleId = chooseRole().indexOf(answer.role) + 1;
+                ]).then(function (answer){
+                   var roleId = chooseRole().indexOf(answer.roles) + 1;
                     connection.query('INSERT INTO employee SET ?',
                     {
                         first_name: answer.first_name,
@@ -132,7 +121,7 @@ function addEmployee() {
                         manager_id: answer.manager_id,
                         role_id: roleId,
                     },
-                    function (err) {
+                    function (err){
                         if (err) throw err;
                         initProgram();
                     })
@@ -142,12 +131,11 @@ function addEmployee() {
 
 var roleArray = [];
 function chooseRole(){
-    connection.query("SELECT * FROM role", function(err, res) {
+    connection.query('SELECT * FROM roles', function(err, res){
         if (err) throw err;
-        for (var a = 0; a < res.length; a++) {
-          roleArray.push(res[a].title);
+        for (var i = 0; i < res.length; i++){
+          roleArray.push(res[i].title);
         }
-    
       })
       return roleArray;
 }
@@ -165,7 +153,7 @@ function viewDepartment(){
 };
 
 
-function addDepartment() {
+function addDepartment(){
     inquirer
         .prompt([
             {
@@ -173,17 +161,17 @@ function addDepartment() {
                 type: 'input', 
                 message: 'Which department would you like to add?'
             }
-            ]).then(function (answer) {
+            ]).then(function (answer){
                 connection.query(
                     'INSERT INTO department SET ?',
                     {
                         name: answer.departmentAdded
                     });
                 var query = 'SELECT * FROM department';
-                connection.query(query, function(err, res) {
+                connection.query(query, function(err, res){
                 if(err)throw err;
                 console.table(res);
-                options();
+                initProgram();
                 })
             })
 };
@@ -191,7 +179,7 @@ function addDepartment() {
 
 
 // view roles 
-function viewRoles() {
+function viewRoles(){
     var query = 'SELECT * FROM roles';
     connection.query(query, function(err, res){
         if(err)throw err;
@@ -200,29 +188,49 @@ function viewRoles() {
     })
 };
 
+
 // add role
-function addRole() {
-    connection.query('SELECT roles.title AS add_role, roles.salary AS salary FROM roles', function(err, res) {
-        inquirer.prompt([
+function addRole(){
+    connection.query('SELECT * FROM department', function(err, res){
+        if (err) throw err;
+        inquirer .prompt([
             {
                 name: 'add_role',
                 type: 'input', 
-                message: "What new role would you like to add?"
+                message: "Enter Role"
             },
             {
                 name: 'salary',
                 type: 'input',
-                message: 'What is the salary of this role? (Enter a number)'
+                message: 'Enter Salary'
             },
-            
-        ]).then(function (res) {
+            {
+                name: 'department_id',
+                type: 'list',
+                message: 'Choose the Department',
+                choices: function(){
+                    var chosenDepartment = [];
+                    for (let i = 0; i < res.length; i++){
+                    chosenDepartment.push(res[i].name);
+                    }
+                    return chosenDepartment;
+                },
+            },
+        ]).then(function (answer){
+            let departmentChoices;
+            for (let i = 0; i < res.length; i++) {
+                if (res[i].name == answer.department_id){
+                    departmentChoices = res[i].id;
+                }
+            }
             connection.query(
                 'INSERT INTO roles SET ?',
                 {
-                    title: res.add_role,
-                    salary: res.salary,
+                    title: answer.add_role,
+                    salary: answer.salary,
+                    department_id: departmentChoices
                 },
-                function (err, res) {
+                function (err, res){
                     if(err)throw err;
                     console.table(res);
                     initProgram();

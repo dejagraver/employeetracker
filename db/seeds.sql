@@ -31,10 +31,10 @@ VALUES
 ('Ralph', 'Giovinazzo', 2, 2),
 ('Shuran', 'Jhandu', 4, 3),
 ('Jennifer', 'Drieberg', 5, 2),
-('Kishandra', 'Hall', 7, 1),
+('Kishandra', 'Hall', 7, 4),
 ('Neisha', 'Martin', 7, 3),
 ('Anita', 'Graver', 9, 2),
 ('Karen', 'East', 2, 7),
-('Bianca', 'Nugara', 9, 1),
+('Bianca', 'Nugara', 9, 5),
 ('Jaden', 'Smith', 5, 6),
 ('Ann', 'Osman', 3, 6);
